@@ -1,12 +1,7 @@
 const express = require("express");
-
 const App = express();
+const CostumerRoute = require("./src/routes/products");
 
-App.use(() => {
-  console.log("Server Node js");
-  console.log("Server Node Laravel");
-  console.log("Server Node Php");
-  console.log("Server Node Php");
-});
+App.use("/", CostumerRoute);
 
 App.listen(4000);
