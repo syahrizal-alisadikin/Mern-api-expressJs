@@ -1,6 +1,7 @@
 const express = require("express");
 const App = express();
 const BodyParser = require("body-parser");
+
 // Handle Cors Express Js
 App.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); //Semua boleh Akses
@@ -12,13 +13,22 @@ App.use((req, res, next) => {
   next();
 });
 
-// Route Product
-const CostumerRoute = require("./src/routes/products");
+// blog Routes
+const blogRoutes = require("./src/routes/blogRoutes");
 // Route Auth
 const AuthRoute = require("./src/routes/auth");
 // Body Parse Json
 App.use(BodyParser.json());
-App.use("/", CostumerRoute);
-App.use("/", AuthRoute);
+App.use("/v1/blogs", AuthRoute);
+App.use("/v1/blogs", blogRoutes);
 
+App.use((error, req, res, next) => {
+  const status = error.errorStatus || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({
+    message,
+    data,
+  });
+});
 App.listen(4000);
